@@ -45,3 +45,23 @@ Coverage threshold for functions (80%) not met: 66.67%
 |[src/module-two.js]()|95.24|33.33|66.67|:x:|
 |[src/module-three.js]()|82.33|100|44.55|:x:|
 |[src/module-four.js]()|95.24|82.55|81.55|:white_check_mark:|
+
+## Settings
+
+The function accepts a settings object with the following properties:
+
+| name                  | description                                                     |
+|-----------------------|-----------------------------------------------------------------|
+| `successMessage`      | A custom message to show when coverage is above the threshold.  |
+| `failureMessage`      | A custom message to show when coverage is bellow the threshold. |
+
+**Example:**
+
+```js
+import coverage from 'danger-plugin-coverage';
+
+schedule(coverage({
+  successMessage: ':+1: Test coverage is looking good.',
+  failureMessage: ':-1: Test coverage is not looking so good.',
+}));
+```

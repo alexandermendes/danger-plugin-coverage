@@ -200,14 +200,9 @@ const getThresholdSummaryLine = (percentages, key) => {
 /**
  * Build the test summary.
  */
-const buildSummary = (metrics) => {
+const buildSummary = (metrics, successMessage, failureMessage) => {
   const percentages = getMetricPercentages(metrics);
   const passed = hasPassed(percentages);
-
-  const failureMessage = '> Test coverage is looking a little low for the files created '
-    + 'or modified in this PR, perhaps we need to improve this.';
-
-  const successMessage = '> :+1: Test coverage is looking good.';
 
   const thresholdSummary = [
     getThresholdSummaryLine(percentages, 'statements'),
@@ -216,11 +211,11 @@ const buildSummary = (metrics) => {
   ].filter((x) => !!x); // Remove empty strings
 
   if (passed) {
-    return successMessage;
+    return `> ${successMessage}`;
   }
 
   return [
-    failureMessage,
+    `> ${failureMessage}`,
     ...(thresholdSummary.length ? [
       '',
       '```',
@@ -246,7 +241,11 @@ const getCombinedMetrics = (files) => files.reduce((acc, file) => {
 /**
  * Report coverage.
  */
-export const coverage = async () => {
+export const coverage = async ({
+  successMessage = ':+1: Test coverage is looking good.',
+  failureMessage = 'Test coverage is looking a little low for the files created '
+    + 'or modified in this PR, perhaps we need to improve this.',
+} = {}) => {
   const cloverPath = path.join(process.cwd(), 'coverage', 'clover.xml');
   const xmlParser = new XMLParser();
 
@@ -255,8 +254,8 @@ export const coverage = async () => {
   }
 
   const data = fs.readFileSync(cloverPath);
-  const { coverage } = await xmlParser.parseStringPromise(data);
-  const files = getFlatFiles(coverage);
+  const { coverage: coverageXml } = await xmlParser.parseStringPromise(data);
+  const files = getFlatFiles(coverageXml);
   const allFiles = [
     ...(danger.git?.created_files || []),
     ...(danger.git?.modified_files || []),
@@ -265,7 +264,7 @@ export const coverage = async () => {
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
   const table = buildTable(relevantFiles);
-  const summary = buildSummary(combinedMetrics);
+  const summary = buildSummary(combinedMetrics, successMessage, failureMessage);
   const report = [
     '## Coverage Report',
     summary,

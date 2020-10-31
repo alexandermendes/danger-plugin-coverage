@@ -1,8 +1,14 @@
 import path from 'path';
 import mockFs from 'mock-fs';
 
-import { setupEnv } from '../utils';
 import coverage from '../../src';
+import {
+  getFileXml,
+  getMarkdownReport,
+  setupEnv,
+  translateMetric,
+  wrapXmlReport,
+} from '../utils';
 
 const cloverPath = path.join(process.cwd(), 'coverage', 'clover.xml');
 
@@ -25,35 +31,6 @@ const successMessage = '> :+1: Test coverage is looking good.';
 
 const failureMessage = '> Test coverage is looking a little low for the files '
   + 'created or modified in this PR, perhaps we need to improve this.';
-
-const wrapXmlReport = (rows) => `
-  <?xml version="1.0" encoding="UTF-8"?>
-  <coverage generated="123" clover="3.2.0">
-    <project timestamp="123" name="All files">
-      ${rows}
-    </project>
-  </coverage>
-`;
-
-const mapAttrs = (attrs) => Object.entries(attrs).map(([key, value]) => `${key}="${value}"`).join(' ');
-
-const getFileXml = (filePath, metrics, lines = []) => `
-  <file
-    name="${path.basename(String(filePath))}"
-    path="${filePath}"
-  >
-    <metrics ${mapAttrs(metrics)} />
-    ${lines.map((line) => `<line ${mapAttrs(line)} />`)}
-  </file>
-`;
-
-const getMarkdownReport = () => markdown.mock.calls[0][0];
-
-const translateMetric = (metric) => ({
-  statements: 'statements',
-  methods: 'functions',
-  conditionals: 'branches',
-}[metric] || metric);
 
 describe('Coverage', () => {
   beforeEach(setupEnv);
