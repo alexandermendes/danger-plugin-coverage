@@ -7,6 +7,10 @@
 
 > A Danger plugin to report code coverage.
 
+This plugin reads coverage report in the `clover.xml` format. This format is
+output by [Jest](https://jestjs.io/) and [Jasmine](https://jasmine.github.io/),
+as well as testing tools in other languages, such as [PHPUnit](https://phpunit.de/).
+
 ## Usage
 
 Install:
