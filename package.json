@@ -1,0 +1,50 @@
+{
+  "name": "danger-plugin-coverage",
+  "version": "1.0.0",
+  "description": "A Danger plugin to report code coverage.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "build": "babel src --out-dir dist",
+    "prebuild": "rimraf dist",
+    "prepublishOnly": "yarn install && yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexandermendes/danger-plugin-coverage"
+  },
+  "keywords": [
+    "danger",
+    "danger-plugin",
+    "coverage",
+    "clover"
+  ],
+  "author": "Alex Mendes",
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.5.2",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.0",
+    "husky": "^4.3.0",
+    "jest": "^26.5.3",
+    "mock-fs": "^4.13.0",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "xml2js": "^0.4.23"
+  }
+}
