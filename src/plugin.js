@@ -261,12 +261,16 @@ const getCoverageXml = async (cloverPath) => {
 /**
  * Get the relevant files.
  */
-const getRelevantFiles = (coverageXml) => {
+const getRelevantFiles = (coverageXml, showAllFiles) => {
   const files = getFlatFiles(coverageXml);
   const allFiles = [
     ...(danger.git?.created_files || []),
     ...(danger.git?.modified_files || []),
   ];
+
+  if (showAllFiles) {
+    return files;
+  }
 
   return files.filter((file) => allFiles.includes(file.$.path));
 };
@@ -280,6 +284,7 @@ export const coverage = async ({
     + 'or modified in this PR, perhaps we need to improve this.',
   cloverReportPath = path.join('coverage', 'clover.xml'),
   maxRows = 5,
+  showAllFiles = false,
 } = {}) => {
   const coverageXml = await getCoverageXml(cloverReportPath);
 
@@ -287,7 +292,7 @@ export const coverage = async ({
     return;
   }
 
-  const relevantFiles = getRelevantFiles(coverageXml);
+  const relevantFiles = getRelevantFiles(coverageXml, showAllFiles);
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
   const table = buildTable(relevantFiles, maxRows);

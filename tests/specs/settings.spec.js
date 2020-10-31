@@ -138,4 +138,27 @@ describe('Settings', () => {
     expect(report).toMatchSnapshot();
     expect(lines).toContain('and 8 more...');
   });
+
+  it('shows all files', async () => {
+    const file = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+    const xmlReport = wrapXmlReport(file);
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: [],
+        modified_files: [],
+      },
+    });
+
+    await coverage({ showAllFiles: true });
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
+  });
 });
