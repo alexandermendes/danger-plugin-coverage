@@ -112,6 +112,6 @@ describe('Settings', () => {
     const report = getMarkdownReport();
     const lines = report.split('\n');
 
-    expect(lines).toContain('|[from-custom-report.js]()|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|from-custom-report.js|100|100|100|:white_check_mark:|');
   });
 });

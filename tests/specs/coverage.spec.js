@@ -61,7 +61,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|[src/one.js]()|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
   });
 
   it.each([
@@ -78,7 +78,7 @@ describe('Coverage', () => {
     const xmlReport = wrapXmlReport(file);
     const row = [
       '',
-      '[src/one.js]()',
+      'src/one.js',
       metric === 'statements' ? '0' : '100',
       metric === 'conditionals' ? '0' : '100',
       metric === 'methods' ? '0' : '100',
@@ -147,9 +147,9 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|[src/one.js]()|100|100|100|:white_check_mark:|');
-    expect(lines).toContain('|[src/two.js]()|100|100|100|:white_check_mark:|');
-    expect(lines).toContain('|[src/three.js]()|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/two.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/three.js|100|100|100|:white_check_mark:|');
   });
 
   it('only includes rows that have been created or modified', async () => {
@@ -180,7 +180,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).not.toContain('|[src/three.js]()|100|100|100|:white_check_mark:|');
+    expect(lines).not.toContain('|src/three.js|100|100|100|:white_check_mark:|');
   });
 
   it('adds any extra rows to a details block', async () => {
@@ -238,7 +238,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|[src/one.js]()|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
   });
 
   it('ignores the row if no lines', async () => {
@@ -271,7 +271,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|[src/one.js]()|-|-|-|-|');
+    expect(lines).toContain('|src/one.js|-|-|-|-|');
   });
 
   it('shortens long paths', async () => {
@@ -300,7 +300,7 @@ describe('Coverage', () => {
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
     expect(lines).toContain(
-      `|[../${seg}/${seg}/${seg}/${seg}/${seg}]()|100|100|100|:white_check_mark:|`,
+      `|../${seg}/${seg}/${seg}/${seg}/${seg}|100|100|100|:white_check_mark:|`,
     );
   });
 
@@ -336,6 +336,37 @@ describe('Coverage', () => {
     expect(lines).toContain(failureMessage);
     expect(lines).toContain('Coverage threshold for branches (80%) not met: 33.33%');
     expect(lines).toContain('Coverage threshold for functions (80%) not met: 66.67%');
-    expect(lines).toContain('|[src/one.js]()|95.24|33.33|66.67|:x:|');
+    expect(lines).toContain('|src/one.js|95.24|33.33|66.67|:x:|');
+  });
+
+  it('includes a link to the committed file', async () => {
+    const fileOne = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+    const fileTwo = getFileXml('src/two.js', defautMetrics, [defaultLine]);
+
+    const xmlReport = wrapXmlReport([
+      fileOne,
+      fileTwo,
+    ].join('\n'));
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: ['src/one.js', 'src/two.js'],
+        modified_files: [],
+        commits: [{ sha: 'abc123' }],
+      },
+    });
+
+    await coverage();
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(report).toMatchSnapshot();
+    expect(lines).toContain('|[src/one.js](../blob/abc123/src/one.js)|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|[src/two.js](../blob/abc123/src/two.js)|100|100|100|:white_check_mark:|');
   });
 });

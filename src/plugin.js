@@ -102,13 +102,17 @@ const hasPassed = ({
  * Build a row for the coverage table.
  */
 const buildRow = (file) => {
-  const filePath = file.$.path; // path.relative(process.cwd(), file.$.path);
   const { line = [], metrics } = file;
   const fileMetrics = (metrics?.[0].$ || {});
 
   const noLines = !line.length;
 
+  const { sha } = danger.git?.commits?.[danger.git.commits.length - 1] || {};
+  const filePath = path.relative(process.cwd(), file.$.path);
   const shortPath = getShortPath(filePath);
+  const fileLink = `../blob/${sha}/${filePath}`;
+  const fileCell = sha ? `[${shortPath}](${fileLink})` : shortPath;
+
   const percentages = getMetricPercentages(fileMetrics);
   const { statements, branches, functions } = percentages;
 
@@ -120,7 +124,7 @@ const buildRow = (file) => {
 
   return [
     '',
-    `[${shortPath}]()`,
+    fileCell,
     noLines ? '-' : statements,
     noLines ? '-' : branches,
     noLines ? '-' : functions,

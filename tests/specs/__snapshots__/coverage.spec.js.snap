@@ -7,11 +7,11 @@ exports[`Coverage adds any extra rows to a details block 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[0]()|100|100|100|:white_check_mark:|
-|[1]()|100|100|100|:white_check_mark:|
-|[2]()|100|100|100|:white_check_mark:|
-|[3]()|100|100|100|:white_check_mark:|
-|[4]()|100|100|100|:white_check_mark:|
+|0|100|100|100|:white_check_mark:|
+|1|100|100|100|:white_check_mark:|
+|2|100|100|100|:white_check_mark:|
+|3|100|100|100|:white_check_mark:|
+|4|100|100|100|:white_check_mark:|
 
 <details>
 <summary>
@@ -20,11 +20,11 @@ and 5 more...
 
 | | | | | |
 |---|:-:|:-:|:-:|:-:|
-|[5]()|100|100|100|:white_check_mark:|
-|[6]()|100|100|100|:white_check_mark:|
-|[7]()|100|100|100|:white_check_mark:|
-|[8]()|100|100|100|:white_check_mark:|
-|[9]()|100|100|100|:white_check_mark:|
+|5|100|100|100|:white_check_mark:|
+|6|100|100|100|:white_check_mark:|
+|7|100|100|100|:white_check_mark:|
+|8|100|100|100|:white_check_mark:|
+|9|100|100|100|:white_check_mark:|
 </details>"
 `;
 
@@ -35,9 +35,9 @@ exports[`Coverage handles multiple packages 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|100|100|:white_check_mark:|
-|[src/two.js]()|100|100|100|:white_check_mark:|
-|[src/three.js]()|100|100|100|:white_check_mark:|"
+|src/one.js|100|100|100|:white_check_mark:|
+|src/two.js|100|100|100|:white_check_mark:|
+|src/three.js|100|100|100|:white_check_mark:|"
 `;
 
 exports[`Coverage handles multiple projects 1`] = `
@@ -47,9 +47,9 @@ exports[`Coverage handles multiple projects 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|100|100|:white_check_mark:|
-|[src/two.js]()|100|100|100|:white_check_mark:|
-|[src/three.js]()|100|100|100|:white_check_mark:|"
+|src/one.js|100|100|100|:white_check_mark:|
+|src/two.js|100|100|100|:white_check_mark:|
+|src/three.js|100|100|100|:white_check_mark:|"
 `;
 
 exports[`Coverage ignores the row if no lines 1`] = `
@@ -59,7 +59,18 @@ exports[`Coverage ignores the row if no lines 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|-|-|-|-|"
+|src/one.js|-|-|-|-|"
+`;
+
+exports[`Coverage includes a link to the committed file 1`] = `
+"## Coverage Report
+
+> :+1: Test coverage is looking good.
+
+|Impacted Files|% Stmts|% Branch|% Funcs||
+|---|:-:|:-:|:-:|:-:|
+|[src/one.js](../blob/abc123/src/one.js)|100|100|100|:white_check_mark:|
+|[src/two.js](../blob/abc123/src/two.js)|100|100|100|:white_check_mark:|"
 `;
 
 exports[`Coverage includes two digits after the decimal point 1`] = `
@@ -74,7 +85,7 @@ Coverage threshold for functions (80%) not met: 66.67%
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|95.24|33.33|66.67|:x:|"
+|src/one.js|95.24|33.33|66.67|:x:|"
 `;
 
 exports[`Coverage only includes rows that have been created or modified 1`] = `
@@ -84,8 +95,8 @@ exports[`Coverage only includes rows that have been created or modified 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|100|100|:white_check_mark:|
-|[src/two.js]()|100|100|100|:white_check_mark:|"
+|src/one.js|100|100|100|:white_check_mark:|
+|src/two.js|100|100|100|:white_check_mark:|"
 `;
 
 exports[`Coverage passes if no total for each metric 1`] = `
@@ -95,7 +106,7 @@ exports[`Coverage passes if no total for each metric 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|100|100|:white_check_mark:|"
+|src/one.js|100|100|100|:white_check_mark:|"
 `;
 
 exports[`Coverage reports row as failing when conditionals does not meet the threshold 1`] = `
@@ -109,7 +120,7 @@ Coverage threshold for branches (80%) not met: 0%
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|0|100|:x:|"
+|src/one.js|100|0|100|:x:|"
 `;
 
 exports[`Coverage reports row as failing when methods does not meet the threshold 1`] = `
@@ -123,7 +134,7 @@ Coverage threshold for functions (80%) not met: 0%
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|100|0|:x:|"
+|src/one.js|100|100|0|:x:|"
 `;
 
 exports[`Coverage reports row as failing when statements does not meet the threshold 1`] = `
@@ -137,7 +148,7 @@ Coverage threshold for statements (80%) not met: 0%
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|0|100|100|:x:|"
+|src/one.js|0|100|100|:x:|"
 `;
 
 exports[`Coverage reports row as passing when all metrics meet the threshold 1`] = `
@@ -147,7 +158,7 @@ exports[`Coverage reports row as passing when all metrics meet the threshold 1`]
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[src/one.js]()|100|100|100|:white_check_mark:|"
+|src/one.js|100|100|100|:white_check_mark:|"
 `;
 
 exports[`Coverage shortens long paths 1`] = `
@@ -157,5 +168,5 @@ exports[`Coverage shortens long paths 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs||
 |---|:-:|:-:|:-:|:-:|
-|[../xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx]()|100|100|100|:white_check_mark:|"
+|../xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx|100|100|100|:white_check_mark:|"
 `;
