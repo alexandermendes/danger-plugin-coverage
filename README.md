@@ -64,6 +64,7 @@ The function accepts a settings object with the following properties:
 | `failureMessage`   | A custom message to show when coverage is bellow the threshold.                              |
 | `cloverReportPath` | The relative path to the `clover.xml` file.                                                  |
 | `maxRows`          | The number of rows to show (additional rows will be collapsed within a `<details>` element). |
+| `threshold`        | The thresholds at which to show the failure messaging.                      s                 |
 
 **Example:**
 
@@ -75,5 +76,10 @@ schedule(coverage({
   failureMessage: ':-1: Test coverage is not looking so good.',
   cloverReportPath: './coverage/clover.xml',
   maxRows: 5,
+  threshold: {
+    statements: 80,
+    branches: 80,
+    functions: 80,
+  },
 }));
 ```

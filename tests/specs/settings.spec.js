@@ -161,4 +161,42 @@ describe('Settings', () => {
 
     expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
   });
+
+  it('uses custom thresholds', async () => {
+    const file = getFileXml('src/one.js', {
+      statements: 10,
+      coveredstatements: 9,
+      conditionals: 10,
+      coveredconditionals: 9,
+      methods: 10,
+      coveredmethods: 9,
+    }, [defaultLine]);
+    const xmlReport = wrapXmlReport(file);
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: ['src/one.js'],
+        modified_files: [],
+      },
+    });
+
+    await coverage({
+      failureMessage: 'Not good',
+      threshold: {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+      },
+    });
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(lines).toContain('> Not good');
+    expect(lines).toContain('|src/one.js|90|90|90|:x:|');
+  });
 });

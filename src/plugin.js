@@ -2,12 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { Parser as XMLParser } from 'xml2js';
 
-const threshold = {
-  statements: 80,
-  branches: 80,
-  functions: 80,
-};
-
 const newLine = '\n';
 
 /**
@@ -88,7 +82,7 @@ const getShortPath = (filePath) => {
 /**
  * Check if we have passed the thresholds for the given percentages.
  */
-const hasPassed = ({
+const hasPassed = (threshold, {
   statements,
   branches,
   functions,
@@ -101,7 +95,7 @@ const hasPassed = ({
 /**
  * Build a row for the coverage table.
  */
-const buildRow = (file) => {
+const buildRow = (file, threshold) => {
   const { line = [], metrics } = file;
   const fileMetrics = (metrics?.[0].$ || {});
 
@@ -116,7 +110,7 @@ const buildRow = (file) => {
   const percentages = getMetricPercentages(fileMetrics);
   const { statements, branches, functions } = percentages;
 
-  let emoji = hasPassed(percentages) ? ':white_check_mark:' : ':x:';
+  let emoji = hasPassed(threshold, percentages) ? ':white_check_mark:' : ':x:';
 
   if (noLines) {
     emoji = '-';
@@ -141,7 +135,7 @@ const joinRow = (items) => `|${items.map((item) => item).join('|')}|`;
 /**
  * Build the coverage table.
  */
-const buildTable = (files, maxRows) => {
+const buildTable = (files, maxRows, threshold) => {
   const headings = [
     'Impacted Files',
     '% Stmts',
@@ -190,7 +184,7 @@ const buildTable = (files, maxRows) => {
 /**
  * Get a line for the threshold summary.
  */
-const getThresholdSummaryLine = (percentages, key) => {
+const getThresholdSummaryLine = (percentages, key, threshold) => {
   const wasMet = Number(percentages[key]) >= threshold[key];
 
   if (wasMet) {
@@ -203,14 +197,14 @@ const getThresholdSummaryLine = (percentages, key) => {
 /**
  * Build the test summary.
  */
-const buildSummary = (metrics, successMessage, failureMessage) => {
+const buildSummary = (metrics, successMessage, failureMessage, threshold) => {
   const percentages = getMetricPercentages(metrics);
-  const passed = hasPassed(percentages);
+  const passed = hasPassed(threshold, percentages);
 
   const thresholdSummary = [
-    getThresholdSummaryLine(percentages, 'statements'),
-    getThresholdSummaryLine(percentages, 'branches'),
-    getThresholdSummaryLine(percentages, 'functions'),
+    getThresholdSummaryLine(percentages, 'statements', threshold),
+    getThresholdSummaryLine(percentages, 'branches', threshold),
+    getThresholdSummaryLine(percentages, 'functions', threshold),
   ].filter((x) => !!x); // Remove empty strings
 
   if (passed) {
@@ -285,6 +279,11 @@ export const coverage = async ({
   cloverReportPath = path.join('coverage', 'clover.xml'),
   maxRows = 5,
   showAllFiles = false,
+  threshold = {
+    statements: 80,
+    branches: 80,
+    functions: 80,
+  },
 } = {}) => {
   const coverageXml = await getCoverageXml(cloverReportPath);
 
@@ -295,8 +294,8 @@ export const coverage = async ({
   const relevantFiles = getRelevantFiles(coverageXml, showAllFiles);
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
-  const table = buildTable(relevantFiles, maxRows);
-  const summary = buildSummary(combinedMetrics, successMessage, failureMessage);
+  const table = buildTable(relevantFiles, maxRows, threshold);
+  const summary = buildSummary(combinedMetrics, successMessage, failureMessage, threshold);
   const report = [
     '## Coverage Report',
     summary,
