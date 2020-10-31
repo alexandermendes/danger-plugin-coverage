@@ -34,6 +34,8 @@ is the default output location for Jest.
 
 Coverage will be reported as in the example below.
 
+---
+
 ## Coverage Report
 
 > Test coverage is looking a little low for the files created or modified in this PR, perhaps we need to improve this.
@@ -49,6 +51,8 @@ Coverage threshold for functions (80%) not met: 66.67%
 |[src/module-two.js]()|95.24|33.33|66.67|:x:|
 |[src/module-three.js]()|82.33|100|44.55|:x:|
 |[src/module-four.js]()|95.24|82.55|81.55|:white_check_mark:|
+
+---
 
 ## Settings
 
