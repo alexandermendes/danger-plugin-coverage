@@ -28,7 +28,11 @@ import coverage from 'danger-plugin-coverage';
 schedule(coverage());
 ```
 
-Coverage will be reported like so:
+Note that the coverage report output by your test runner must exist before Danger
+is run. By default we will look for the report at `coverage/clover.xml`, which
+is the default output location for Jest.
+
+Coverage will be reported as in the example below.
 
 ## Coverage Report
 
