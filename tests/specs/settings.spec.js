@@ -26,7 +26,7 @@ const defaultLine = {
   type: 'stmt',
 };
 
-describe('Custom messages', () => {
+describe('Settings', () => {
   beforeEach(setupEnv);
 
   afterEach(() => {
@@ -88,5 +88,30 @@ describe('Custom messages', () => {
     const lines = report.split('\n');
 
     expect(lines).toContain('> Not good');
+  });
+
+  it('loads the report from a custom path', async () => {
+    const file = getFileXml('from-custom-report.js', defautMetrics, [defaultLine]);
+    const xmlReport = wrapXmlReport(file);
+
+    const cloverReportPath = './custom/path/to/clover.xml';
+
+    mockFs({
+      [path.join(process.cwd(), cloverReportPath)]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: ['from-custom-report.js'],
+        modified_files: [],
+      },
+    });
+
+    await coverage({ cloverReportPath });
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(lines).toContain('|[from-custom-report.js]()|100|100|100|:white_check_mark:|');
   });
 });

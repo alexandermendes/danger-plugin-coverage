@@ -239,28 +239,52 @@ const getCombinedMetrics = (files) => files.reduce((acc, file) => {
 }, {});
 
 /**
+ * Get the parsed coverage XML.
+ */
+const getCoverageXml = async (customPath) => {
+  const relativePath = customPath || path.join('coverage', 'clover.xml');
+  const absolutePath = path.join(process.cwd(), relativePath);
+  const xmlParser = new XMLParser();
+
+  if (!fs.existsSync(absolutePath)) {
+    return null;
+  }
+
+  const data = fs.readFileSync(absolutePath);
+  const { coverage: coverageXml } = await xmlParser.parseStringPromise(data);
+
+  return coverageXml;
+};
+
+/**
+ * Get the relevant files.
+ */
+const getRelevantFiles = (coverageXml) => {
+  const files = getFlatFiles(coverageXml);
+  const allFiles = [
+    ...(danger.git?.created_files || []),
+    ...(danger.git?.modified_files || []),
+  ];
+
+  return files.filter((file) => allFiles.includes(file.$.path));
+};
+
+/**
  * Report coverage.
  */
 export const coverage = async ({
   successMessage = ':+1: Test coverage is looking good.',
   failureMessage = 'Test coverage is looking a little low for the files created '
     + 'or modified in this PR, perhaps we need to improve this.',
+  cloverReportPath,
 } = {}) => {
-  const cloverPath = path.join(process.cwd(), 'coverage', 'clover.xml');
-  const xmlParser = new XMLParser();
+  const coverageXml = await getCoverageXml(cloverReportPath);
 
-  if (!fs.existsSync(cloverPath)) {
+  if (!coverageXml) {
     return;
   }
 
-  const data = fs.readFileSync(cloverPath);
-  const { coverage: coverageXml } = await xmlParser.parseStringPromise(data);
-  const files = getFlatFiles(coverageXml);
-  const allFiles = [
-    ...(danger.git?.created_files || []),
-    ...(danger.git?.modified_files || []),
-  ];
-  const relevantFiles = files.filter((file) => allFiles.includes(file.$.path));
+  const relevantFiles = getRelevantFiles(coverageXml);
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
   const table = buildTable(relevantFiles);
