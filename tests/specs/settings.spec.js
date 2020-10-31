@@ -114,4 +114,28 @@ describe('Settings', () => {
 
     expect(lines).toContain('|from-custom-report.js|100|100|100|:white_check_mark:|');
   });
+
+  it('limits the number of rows', async () => {
+    const files = new Array(10).fill().map((_, i) => getFileXml(i, defautMetrics, [defaultLine]));
+    const xmlReport = wrapXmlReport(files.join('\n'));
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: new Array(10).fill().map((_, i) => String(i)),
+        modified_files: [],
+      },
+    });
+
+    await coverage({ maxRows: 2 });
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(report).toMatchSnapshot();
+    expect(lines).toContain('and 8 more...');
+  });
 });

@@ -141,7 +141,7 @@ const joinRow = (items) => `|${items.map((item) => item).join('|')}|`;
 /**
  * Build the coverage table.
  */
-const buildTable = (files) => {
+const buildTable = (files, maxRows) => {
   const headings = [
     'Impacted Files',
     '% Stmts',
@@ -159,7 +159,6 @@ const buildTable = (files) => {
     ], []),
   );
 
-  const maxRows = 5;
   const allFileRows = files.map((file) => buildRow(file, threshold));
   const mainFileRows = allFileRows.slice(0, maxRows);
   const extraFileRows = allFileRows.slice(maxRows);
@@ -245,9 +244,8 @@ const getCombinedMetrics = (files) => files.reduce((acc, file) => {
 /**
  * Get the parsed coverage XML.
  */
-const getCoverageXml = async (customPath) => {
-  const relativePath = customPath || path.join('coverage', 'clover.xml');
-  const absolutePath = path.join(process.cwd(), relativePath);
+const getCoverageXml = async (cloverPath) => {
+  const absolutePath = path.join(process.cwd(), cloverPath);
   const xmlParser = new XMLParser();
 
   if (!fs.existsSync(absolutePath)) {
@@ -280,7 +278,8 @@ export const coverage = async ({
   successMessage = ':+1: Test coverage is looking good.',
   failureMessage = 'Test coverage is looking a little low for the files created '
     + 'or modified in this PR, perhaps we need to improve this.',
-  cloverReportPath,
+  cloverReportPath = path.join('coverage', 'clover.xml'),
+  maxRows = 5,
 } = {}) => {
   const coverageXml = await getCoverageXml(cloverReportPath);
 
@@ -291,7 +290,7 @@ export const coverage = async ({
   const relevantFiles = getRelevantFiles(coverageXml);
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
-  const table = buildTable(relevantFiles);
+  const table = buildTable(relevantFiles, maxRows);
   const summary = buildSummary(combinedMetrics, successMessage, failureMessage);
   const report = [
     '## Coverage Report',

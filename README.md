@@ -58,11 +58,12 @@ Coverage threshold for functions (80%) not met: 66.67%
 
 The function accepts a settings object with the following properties:
 
-| name               | description                                                     |
-|--------------------|-----------------------------------------------------------------|
-| `successMessage`   | A custom message to show when coverage is above the threshold.  |
-| `failureMessage`   | A custom message to show when coverage is bellow the threshold. |
-| `cloverReportPath` | The relative path to the `clover.xml` file.                     |
+| name               | description                                                                                  |
+|--------------------|----------------------------------------------------------------------------------------------|
+| `successMessage`   | A custom message to show when coverage is above the threshold.                               |
+| `failureMessage`   | A custom message to show when coverage is bellow the threshold.                              |
+| `cloverReportPath` | The relative path to the `clover.xml` file.                                                  |
+| `maxRows`          | The number of rows to show (additional rows will be collapsed within a `<details>` element). |
 
 **Example:**
 
@@ -73,5 +74,6 @@ schedule(coverage({
   successMessage: ':+1: Test coverage is looking good.',
   failureMessage: ':-1: Test coverage is not looking so good.',
   cloverReportPath: './coverage/clover.xml',
+  maxRows: 5,
 }));
 ```
