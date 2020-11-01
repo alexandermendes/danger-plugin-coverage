@@ -61,7 +61,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/one.js|100|100|100|100|:white_check_mark:|');
   });
 
   it.each([
@@ -82,6 +82,7 @@ describe('Coverage', () => {
       metric === 'statements' ? '0' : '100',
       metric === 'conditionals' ? '0' : '100',
       metric === 'methods' ? '0' : '100',
+      '100', // lines tested separately
       ':x:',
       '',
     ].join('|');
@@ -106,6 +107,38 @@ describe('Coverage', () => {
     expect(lines).toContain(failureMessage);
     expect(lines).toContain(`Coverage threshold for ${translateMetric(metric)} (80%) not met: 0%`);
     expect(lines).toContain(row);
+  });
+
+  it('reports row as failing when lines does not meet the threshold', async () => {
+    const file = getFileXml('src/one.js', defautMetrics, [
+      {
+        num: 1,
+        count: 0,
+        type: 'stmt',
+      },
+    ]);
+    const xmlReport = wrapXmlReport(file);
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: ['src/one.js'],
+        modified_files: [],
+      },
+    });
+
+    await coverage();
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(report).toMatchSnapshot();
+    expect(lines).toContain(failureMessage);
+    expect(lines).toContain('Coverage threshold for lines (80%) not met: 0%');
+    expect(lines).toContain('|src/one.js|100|100|100|0|:x:|');
   });
 
   it.each(['project', 'package'])('handles multiple %ss', async (parentElement) => {
@@ -147,9 +180,9 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
-    expect(lines).toContain('|src/two.js|100|100|100|:white_check_mark:|');
-    expect(lines).toContain('|src/three.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/one.js|100|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/two.js|100|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/three.js|100|100|100|100|:white_check_mark:|');
   });
 
   it('only includes rows that have been created or modified', async () => {
@@ -180,7 +213,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).not.toContain('|src/three.js|100|100|100|:white_check_mark:|');
+    expect(lines).not.toContain('|src/three.js|100|100|100|100|:white_check_mark:|');
   });
 
   it('adds any extra rows to a details block', async () => {
@@ -238,7 +271,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|src/one.js|100|100|100|100|:white_check_mark:|');
   });
 
   it('ignores the row if no lines', async () => {
@@ -271,7 +304,7 @@ describe('Coverage', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('|src/one.js|-|-|-|-|');
+    expect(lines).toContain('|src/one.js|-|-|-|-|-|');
   });
 
   it('shortens long paths', async () => {
@@ -300,7 +333,7 @@ describe('Coverage', () => {
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
     expect(lines).toContain(
-      `|../${seg}/${seg}/${seg}/${seg}/${seg}|100|100|100|:white_check_mark:|`,
+      `|../${seg}/${seg}/${seg}/${seg}/${seg}|100|100|100|100|:white_check_mark:|`,
     );
   });
 
@@ -336,7 +369,7 @@ describe('Coverage', () => {
     expect(lines).toContain(failureMessage);
     expect(lines).toContain('Coverage threshold for branches (80%) not met: 33.33%');
     expect(lines).toContain('Coverage threshold for functions (80%) not met: 66.67%');
-    expect(lines).toContain('|src/one.js|95.24|33.33|66.67|:x:|');
+    expect(lines).toContain('|src/one.js|95.24|33.33|66.67|100|:x:|');
   });
 
   it('includes a link to the committed file', async () => {
@@ -366,7 +399,7 @@ describe('Coverage', () => {
     const lines = report.split('\n');
 
     expect(report).toMatchSnapshot();
-    expect(lines).toContain('|[src/one.js](../blob/abc123/src/one.js)|100|100|100|:white_check_mark:|');
-    expect(lines).toContain('|[src/two.js](../blob/abc123/src/two.js)|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|[src/one.js](../blob/abc123/src/one.js)|100|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|[src/two.js](../blob/abc123/src/two.js)|100|100|100|100|:white_check_mark:|');
   });
 });

@@ -112,7 +112,7 @@ describe('Settings', () => {
     const report = getMarkdownReport();
     const lines = report.split('\n');
 
-    expect(lines).toContain('|from-custom-report.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|from-custom-report.js|100|100|100|100|:white_check_mark:|');
   });
 
   it('limits the number of rows', async () => {
@@ -159,8 +159,8 @@ describe('Settings', () => {
     const report = getMarkdownReport();
     const lines = report.split('\n');
 
-    expect(lines).toContain('|Files|% Stmts|% Branch|% Funcs||');
-    expect(lines).toContain('|src/one.js|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|Files|% Stmts|% Branch|% Funcs|% Lines||');
+    expect(lines).toContain('|src/one.js|100|100|100|100|:white_check_mark:|');
   });
 
   it('uses custom thresholds', async () => {
@@ -171,7 +171,18 @@ describe('Settings', () => {
       coveredconditionals: 9,
       methods: 10,
       coveredmethods: 9,
-    }, [defaultLine]);
+    }, [
+      {
+        num: 1,
+        count: 0,
+        type: 'stmt',
+      },
+      {
+        num: 1,
+        count: 1,
+        type: 'stmt',
+      },
+    ]);
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
@@ -191,6 +202,7 @@ describe('Settings', () => {
         statements: 100,
         branches: 100,
         functions: 100,
+        lines: 50,
       },
     });
 
@@ -198,6 +210,6 @@ describe('Settings', () => {
     const lines = report.split('\n');
 
     expect(lines).toContain('> Not good');
-    expect(lines).toContain('|src/one.js|90|90|90|:x:|');
+    expect(lines).toContain('|src/one.js|90|90|90|50|:x:|');
   });
 });

@@ -44,11 +44,30 @@ const getMetricPercentages = ({
   coveredconditionals,
   methods,
   coveredmethods,
+  lines,
+  coveredlines,
 }) => ({
   statements: getCoveredPercentage(coveredstatements, statements),
   branches: getCoveredPercentage(coveredconditionals, conditionals),
   functions: getCoveredPercentage(coveredmethods, methods),
+  lines: getCoveredPercentage(coveredlines, lines),
 });
+
+/**
+ * Get the metrics for a file.
+ */
+const getFileMetrics = (file) => {
+  const { line: lines = [], metrics } = file;
+  const fileMetrics = (metrics?.[0].$ || {});
+
+  const uncoveredLines = lines.filter((line) => !Number(line.$?.count || 0));
+
+  return {
+    ...fileMetrics,
+    lines: lines.length,
+    coveredlines: lines.length - uncoveredLines.length,
+  };
+};
 
 /**
  * Shorten a path so that it fits in a GitHub comment.
@@ -86,20 +105,19 @@ const hasPassed = (threshold, {
   statements,
   branches,
   functions,
+  lines,
 }) => (
   (Number(statements) >= threshold.statements || statements === '-')
   && (Number(branches) >= threshold.branches || branches === '-')
   && (Number(functions) >= threshold.functions || functions === '-')
+  && (Number(lines) >= threshold.lines || lines === '-')
 );
 
 /**
  * Build a row for the coverage table.
  */
 const buildRow = (file, threshold) => {
-  const { line = [], metrics } = file;
-  const fileMetrics = (metrics?.[0].$ || {});
-
-  const noLines = !line.length;
+  const fileMetrics = getFileMetrics(file);
 
   const { sha } = danger.git?.commits?.[danger.git.commits.length - 1] || {};
   const filePath = path.relative(process.cwd(), file.$.path);
@@ -108,8 +126,8 @@ const buildRow = (file, threshold) => {
   const fileCell = sha ? `[${shortPath}](${fileLink})` : shortPath;
 
   const percentages = getMetricPercentages(fileMetrics);
-  const { statements, branches, functions } = percentages;
 
+  const noLines = !fileMetrics.lines;
   let emoji = hasPassed(threshold, percentages) ? ':white_check_mark:' : ':x:';
 
   if (noLines) {
@@ -119,9 +137,10 @@ const buildRow = (file, threshold) => {
   return [
     '',
     fileCell,
-    noLines ? '-' : statements,
-    noLines ? '-' : branches,
-    noLines ? '-' : functions,
+    noLines ? '-' : percentages.statements,
+    noLines ? '-' : percentages.branches,
+    noLines ? '-' : percentages.functions,
+    noLines ? '-' : percentages.lines,
     emoji,
     '',
   ].join('|');
@@ -141,6 +160,7 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
     '% Stmts',
     '% Branch',
     '% Funcs',
+    '% Lines',
     '',
   ];
 
@@ -185,7 +205,7 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
  * Get a line for the threshold summary.
  */
 const getThresholdSummaryLine = (percentages, key, threshold) => {
-  const wasMet = Number(percentages[key]) >= threshold[key];
+  const wasMet = Number(percentages[key]) >= (threshold[key] || 0);
 
   if (wasMet) {
     return '';
@@ -205,6 +225,7 @@ const buildSummary = (metrics, successMessage, failureMessage, threshold) => {
     getThresholdSummaryLine(percentages, 'statements', threshold),
     getThresholdSummaryLine(percentages, 'branches', threshold),
     getThresholdSummaryLine(percentages, 'functions', threshold),
+    getThresholdSummaryLine(percentages, 'lines', threshold),
   ].filter((x) => !!x); // Remove empty strings
 
   if (passed) {
@@ -226,7 +247,7 @@ const buildSummary = (metrics, successMessage, failureMessage, threshold) => {
  * Get the combined metrics for the checked files.
  */
 const getCombinedMetrics = (files) => files.reduce((acc, file) => {
-  const fileMetrics = (file.metrics?.[0].$ || {});
+  const fileMetrics = getFileMetrics(file);
 
   Object.keys(fileMetrics).forEach((key) => {
     acc[key] = acc[key] || 0 + Number(fileMetrics[key]);
@@ -266,6 +287,7 @@ export const coverage = async ({
     statements: 80,
     branches: 80,
     functions: 80,
+    lines: 80,
   },
 } = {}) => {
   const coverageXml = await getCoverageReport(cloverReportPath);
