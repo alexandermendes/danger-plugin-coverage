@@ -1,6 +1,6 @@
-import fs from 'fs';
 import path from 'path';
-import { Parser as XMLParser } from 'xml2js';
+
+import { getCoverageReport } from './report';
 
 const newLine = '\n';
 
@@ -236,23 +236,6 @@ const getCombinedMetrics = (files) => files.reduce((acc, file) => {
 }, {});
 
 /**
- * Get the parsed coverage XML.
- */
-const getCoverageXml = async (cloverPath) => {
-  const absolutePath = path.join(process.cwd(), cloverPath);
-  const xmlParser = new XMLParser();
-
-  if (!fs.existsSync(absolutePath)) {
-    return null;
-  }
-
-  const data = fs.readFileSync(absolutePath);
-  const { coverage: coverageXml } = await xmlParser.parseStringPromise(data);
-
-  return coverageXml;
-};
-
-/**
  * Get the relevant files.
  */
 const getRelevantFiles = (coverageXml, showAllFiles) => {
@@ -276,7 +259,7 @@ export const coverage = async ({
   successMessage = ':+1: Test coverage is looking good.',
   failureMessage = 'Test coverage is looking a little low for the files created '
     + 'or modified in this PR, perhaps we need to improve this.',
-  cloverReportPath = path.join('coverage', 'clover.xml'),
+  cloverReportPath,
   maxRows = 5,
   showAllFiles = false,
   threshold = {
@@ -285,7 +268,7 @@ export const coverage = async ({
     functions: 80,
   },
 } = {}) => {
-  const coverageXml = await getCoverageXml(cloverReportPath);
+  const coverageXml = await getCoverageReport(cloverReportPath);
 
   if (!coverageXml) {
     return;

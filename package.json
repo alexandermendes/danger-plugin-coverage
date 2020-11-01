@@ -45,6 +45,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
+    "fast-glob": "^3.2.4",
     "xml2js": "^0.4.23"
   }
 }
