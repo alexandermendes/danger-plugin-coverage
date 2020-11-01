@@ -165,7 +165,6 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
   ];
 
   const headingRow = joinRow(headings);
-  const emptyHeadingRow = joinRow(new Array(headings.length).fill(' '));
   const seperator = joinRow(
     new Array(headings.length).fill().reduce((acc, _, index) => [
       ...acc,
@@ -191,7 +190,7 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
       `and ${extraFileRows.length} more...`,
       '</summary>',
       '',
-      emptyHeadingRow,
+      headingRow,
       seperator,
       ...extraFileRows,
       '</details>',

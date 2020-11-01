@@ -15,7 +15,7 @@ exports[`Settings limits the number of rows 1`] = `
 and 8 more...
 </summary>
 
-| | | | | | |
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines||
 |---|:-:|:-:|:-:|:-:|:-:|
 |2|100|100|100|100|:white_check_mark:|
 |3|100|100|100|100|:white_check_mark:|
