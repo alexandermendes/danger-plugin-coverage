@@ -27,16 +27,28 @@ reporter for other languages too.
 > Test coverage is looking a little low for the files created or modified in this PR, perhaps we need to improve this.
 
 ```
-Coverage threshold for branches (80%) not met: 33.33%
-Coverage threshold for functions (80%) not met: 66.67%
+Coverage threshold for branches (80%) not met: 49.08%
+Coverage threshold for functions (80%) not met: 74.46%
 ```
 
-|Impacted Files|% Stmts|% Branch|% Funcs||
-|---|:-:|:-:|:-:|:-:|
-|[src/module-one.js]()|100|100|100|:white_check_mark:|
-|[src/module-two.js]()|95.24|33.33|66.67|:x:|
-|[src/module-three.js]()|82.33|100|44.55|:x:|
-|[src/module-four.js]()|95.24|82.55|81.55|:white_check_mark:|
+|Impacted Files|% Stmts|% Branch|% Funcs|% Line||
+|---|:-:|:-:|:-:|:-:|:-:|
+|[src/module-one.js]()|100|100|100|100|:white_check_mark:|
+|[src/module-two.js]()|95.24|33.33|66.67|100|:x:|
+|[src/module-three.js]()|82.33|10.25|44.55|100|:x:|
+|[src/module-four.js]()|100|0|10|100|:x:|
+|[src/module-five.js]()|100|100|100|100|:white_check_mark:|
+
+<details>
+<summary>
+and 2 more...
+</summary>
+
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines||
+|---|:-:|:-:|:-:|:-:|:-:|
+|[src/module-six.js]()|100|100|100|100|:white_check_mark:|
+|[src/module-seven.js]()|100|100|100|100|:white_check_mark:|
+</details>
 
 </details>
 
