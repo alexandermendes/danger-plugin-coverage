@@ -11,6 +11,27 @@ This plugin reads coverage report in the `clover.xml` format. This format is
 output by various JavaScript testing libraries, such as [Jest](https://jestjs.io/),
 as well as testing libraries for other languages, such as [PHPUnit](https://phpunit.de/).
 
+<details>
+  <summary>View an example report</summary>
+
+## Coverage Report
+
+> Test coverage is looking a little low for the files created or modified in this PR, perhaps we need to improve this.
+
+```
+Coverage threshold for branches (80%) not met: 33.33%
+Coverage threshold for functions (80%) not met: 66.67%
+```
+
+|Impacted Files|% Stmts|% Branch|% Funcs||
+|---|:-:|:-:|:-:|:-:|
+|[src/module-one.js]()|100|100|100|:white_check_mark:|
+|[src/module-two.js]()|95.24|33.33|66.67|:x:|
+|[src/module-three.js]()|82.33|100|44.55|:x:|
+|[src/module-four.js]()|95.24|82.55|81.55|:white_check_mark:|
+
+</details>
+
 ## Usage
 
 Install:
@@ -31,28 +52,6 @@ schedule(coverage());
 Note that the coverage report output by your test runner must exist before Danger
 is run. By default we will look for the report at `coverage/clover.xml`, which
 is the default output location for Jest.
-
-Coverage will be reported as in the example below.
-
----
-
-## Coverage Report
-
-> Test coverage is looking a little low for the files created or modified in this PR, perhaps we need to improve this.
-
-```
-Coverage threshold for branches (80%) not met: 33.33%
-Coverage threshold for functions (80%) not met: 66.67%
-```
-
-|Impacted Files|% Stmts|% Branch|% Funcs||
-|---|:-:|:-:|:-:|:-:|
-|[src/module-one.js]()|100|100|100|:white_check_mark:|
-|[src/module-two.js]()|95.24|33.33|66.67|:x:|
-|[src/module-three.js]()|82.33|100|44.55|:x:|
-|[src/module-four.js]()|95.24|82.55|81.55|:white_check_mark:|
-
----
 
 ## Settings
 
