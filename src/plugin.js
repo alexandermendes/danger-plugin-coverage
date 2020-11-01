@@ -135,9 +135,9 @@ const joinRow = (items) => `|${items.map((item) => item).join('|')}|`;
 /**
  * Build the coverage table.
  */
-const buildTable = (files, maxRows, threshold) => {
+const buildTable = (files, maxRows, threshold, showAllFiles) => {
   const headings = [
-    'Impacted Files',
+    `${showAllFiles ? '' : 'Impacted '}Files`,
     '% Stmts',
     '% Branch',
     '% Funcs',
@@ -277,7 +277,7 @@ export const coverage = async ({
   const relevantFiles = getRelevantFiles(coverageXml, showAllFiles);
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
-  const table = buildTable(relevantFiles, maxRows, threshold);
+  const table = buildTable(relevantFiles, maxRows, threshold, showAllFiles);
   const summary = buildSummary(combinedMetrics, successMessage, failureMessage, threshold);
   const report = [
     '## Coverage Report',
