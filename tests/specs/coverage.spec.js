@@ -402,4 +402,12 @@ describe('Coverage', () => {
     expect(lines).toContain('|[src/one.js](../blob/abc123/src/one.js)|100|100|100|100|:white_check_mark:|');
     expect(lines).toContain('|[src/two.js](../blob/abc123/src/two.js)|100|100|100|100|:white_check_mark:|');
   });
+
+  it('does not report anything if no coverage reported for the files changed', async () => {
+    mockFs();
+
+    await coverage();
+
+    expect(getMarkdownReport()).toBeUndefined();
+  });
 });

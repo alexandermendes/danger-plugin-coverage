@@ -36,7 +36,7 @@ export const getFileXml = (filePath, metrics, lines = []) => `
   </file>
 `;
 
-export const getMarkdownReport = () => markdown.mock.calls[0][0];
+export const getMarkdownReport = () => markdown.mock.calls?.[0]?.[0];
 
 export const translateMetric = (metric) => ({
   statements: 'statements',
