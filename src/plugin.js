@@ -269,7 +269,9 @@ const getRelevantFiles = (coverageXml, showAllFiles) => {
     return files;
   }
 
-  return files.filter((file) => allFiles.includes(file.$.path));
+  return files.filter((file) => allFiles.includes(
+    path.relative(process.cwd(), file.$.path),
+  ));
 };
 
 /**

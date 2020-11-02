@@ -432,4 +432,29 @@ describe('Coverage', () => {
 
     expect(getMarkdownReport()).toBeUndefined();
   });
+
+  it('handles relative paths correctly', async () => {
+    const fileOne = getFileXml(path.join(process.cwd(), '/src/index.js'), defautMetrics, [defaultLine]);
+
+    const xmlReport = wrapXmlReport([fileOne].join('\n'));
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: ['src/index.js'],
+        modified_files: [],
+      },
+    });
+
+    await coverage();
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(report).toMatchSnapshot();
+    expect(lines).toContain('|src/index.js|100|100|100|100|:white_check_mark:|');
+  });
 });

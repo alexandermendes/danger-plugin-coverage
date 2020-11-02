@@ -52,6 +52,16 @@ exports[`Coverage handles multiple projects 1`] = `
 |src/three.js|100|100|100|100|:white_check_mark:|"
 `;
 
+exports[`Coverage handles relative paths correctly 1`] = `
+"## Coverage Report
+
+> :+1: Test coverage is looking good.
+
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines||
+|---|:-:|:-:|:-:|:-:|:-:|
+|src/index.js|100|100|100|100|:white_check_mark:|"
+`;
+
 exports[`Coverage ignores the row if no lines 1`] = `
 "## Coverage Report
 
