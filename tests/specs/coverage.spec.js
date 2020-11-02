@@ -403,8 +403,30 @@ describe('Coverage', () => {
     expect(lines).toContain('|[src/two.js](../blob/abc123/src/two.js)|100|100|100|100|:white_check_mark:|');
   });
 
-  it('does not report anything if no coverage reported for the files changed', async () => {
+  it('does not report anything if no coverage reported', async () => {
     mockFs();
+
+    await coverage();
+
+    expect(getMarkdownReport()).toBeUndefined();
+  });
+
+  it('does not report anything if no coverage reported for the files changed', async () => {
+    const fileOne = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+
+    const xmlReport = wrapXmlReport([fileOne].join('\n'));
+
+    mockFs({
+      [cloverPath]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: ['package.json'],
+        modified_files: ['package.json', 'yarn.lock'],
+        commits: [{ sha: 'abc123' }],
+      },
+    });
 
     await coverage();
 

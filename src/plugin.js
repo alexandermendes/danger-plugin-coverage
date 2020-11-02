@@ -297,6 +297,10 @@ export const coverage = async ({
 
   const relevantFiles = getRelevantFiles(coverageXml, showAllFiles);
 
+  if (!relevantFiles.length) {
+    return;
+  }
+
   const combinedMetrics = getCombinedMetrics(relevantFiles);
   const table = buildTable(relevantFiles, maxRows, threshold, showAllFiles);
   const summary = buildSummary(combinedMetrics, successMessage, failureMessage, threshold);
