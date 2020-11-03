@@ -1,12 +1,7 @@
 import mockFs from 'mock-fs';
 
 import coverage from '../../src';
-import { CLOVER_PATH, DEFAULT_METRICS, DEFAULT_LINE } from '../constants';
-import {
-  getFileXml,
-  setupEnv,
-  wrapXmlReport,
-} from '../utils';
+import { setupEnv } from '../utils';
 
 describe('Warnings', () => {
   beforeEach(setupEnv);
@@ -44,51 +39,6 @@ describe('Warnings', () => {
     });
 
     await coverage({ warnOnNoReport: false });
-
-    const [warning] = warn.mock.calls?.[0] || [];
-
-    expect(warning).toBeUndefined();
-  });
-
-  it('warns if files missing from report', async () => {
-    const file = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
-    const xmlReport = wrapXmlReport(file);
-
-    mockFs({
-      [CLOVER_PATH]: xmlReport,
-    });
-
-    Object.assign(danger, {
-      git: {
-        created_files: ['src/one.js', 'src/two.js'],
-        modified_files: ['src/three.js'],
-      },
-    });
-
-    await coverage();
-
-    const [warning] = warn.mock.calls?.[0] || [];
-
-    expect(warning).toMatch(/.*no data on 2 files.*/);
-    expect(warning).toMatchSnapshot();
-  });
-
-  it('does not log any warnings on missing files if disabled', async () => {
-    const file = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
-    const xmlReport = wrapXmlReport(file);
-
-    mockFs({
-      [CLOVER_PATH]: xmlReport,
-    });
-
-    Object.assign(danger, {
-      git: {
-        created_files: ['src/one.js', 'src/two.js'],
-        modified_files: ['src/three.js'],
-      },
-    });
-
-    await coverage({ warnOnMissingFiles: false });
 
     const [warning] = warn.mock.calls?.[0] || [];
 

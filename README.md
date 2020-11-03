@@ -85,7 +85,6 @@ The function accepts a settings object with the following properties:
 | `maxRows`            | The number of rows to show (additional rows will be collapsed within a `<details>` element). |
 | `threshold`          | The thresholds at which to show the failure messaging.                                       |
 | `warnOnNoReport`     | Show a warning if no coverage report was detected.                                           |
-| `warnOnMissingFiles` | Show a warning if modified files are missing from the coverage report.                       |
 
 **Example:**
 
@@ -96,7 +95,6 @@ schedule(coverage({
   successMessage: ':+1: Test coverage is looking good.',
   failureMessage: ':-1: Test coverage is not looking so good.',
   warnOnNoReport: true,
-  warnOnMissingFiles: true,
   cloverReportPath: './coverage/clover.xml',
   maxRows: 5,
   threshold: {

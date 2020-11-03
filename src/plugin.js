@@ -258,35 +258,19 @@ const getCombinedMetrics = (files) => files.reduce((acc, file) => {
 /**
  * Get the relevant files.
  */
-const getRelevantFiles = (coverageXml, showAllFiles, warnOnMissingFiles) => {
+const getRelevantFiles = (coverageXml, showAllFiles) => {
   const files = getFlatFiles(coverageXml);
   const allFiles = [
     ...(danger.git?.created_files || []),
     ...(danger.git?.modified_files || []),
   ];
 
-  const filePaths = files.map((file) => path.relative(process.cwd(), file.$.path));
-
   const relevantFiles = files.filter((file) => (
     allFiles.includes(path.relative(process.cwd(), file.$.path))
   ));
 
-  const missingFiles = allFiles.filter((file) => !filePaths.includes(file));
-
   if (showAllFiles) {
     return files;
-  }
-
-  if (warnOnMissingFiles && missingFiles.length) {
-    const pluralisedFiles = `file${missingFiles.length === 1 ? '' : 's'}`;
-    warn([
-      `The coverage report contained no data on ${missingFiles.length} ${pluralisedFiles}.`,
-      '<details>',
-      '<summary>View missing files</summary>',
-      '',
-      ...missingFiles.map((missingFile) => `- ${missingFile}`),
-      '</details>',
-    ].join(newLine));
   }
 
   return relevantFiles;
@@ -303,7 +287,6 @@ export const coverage = async ({
   maxRows = 5,
   showAllFiles = false,
   warnOnNoReport = true,
-  warnOnMissingFiles = true,
   threshold = {
     statements: 80,
     branches: 80,
@@ -321,7 +304,7 @@ export const coverage = async ({
     return;
   }
 
-  const relevantFiles = getRelevantFiles(coverageXml, showAllFiles, warnOnMissingFiles);
+  const relevantFiles = getRelevantFiles(coverageXml, showAllFiles);
 
   if (!relevantFiles.length) {
     return;
