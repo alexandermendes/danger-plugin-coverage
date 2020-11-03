@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Warnings warns if files missing from report 1`] = `
+"The coverage report contained no data on 2 files.
+<details>
+<summary>View missing files</summary>
+
+- src/two.js
+- src/three.js
+</details>"
+`;
+
+exports[`Warnings warns if no report detected 1`] = `"No coverage report was detected. Please output a report in the \`clover.xml\` format before running danger"`;

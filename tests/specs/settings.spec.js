@@ -2,29 +2,13 @@ import path from 'path';
 import mockFs from 'mock-fs';
 
 import coverage from '../../src';
+import { CLOVER_PATH, DEFAULT_METRICS, DEFAULT_LINE } from '../constants';
 import {
   getFileXml,
   getMarkdownReport,
   setupEnv,
   wrapXmlReport,
 } from '../utils';
-
-const cloverPath = path.join(process.cwd(), 'coverage', 'clover.xml');
-
-const defautMetrics = {
-  statements: 10,
-  coveredstatements: 10,
-  conditionals: 10,
-  coveredconditionals: 10,
-  methods: 10,
-  coveredmethods: 10,
-};
-
-const defaultLine = {
-  num: 1,
-  count: 1,
-  type: 'stmt',
-};
 
 describe('Settings', () => {
   beforeEach(setupEnv);
@@ -34,11 +18,11 @@ describe('Settings', () => {
   });
 
   it('reports with a custom success message', async () => {
-    const file = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+    const file = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -66,11 +50,11 @@ describe('Settings', () => {
       coveredconditionals: 0,
       methods: 10,
       coveredmethods: 0,
-    }, [defaultLine]);
+    }, [DEFAULT_LINE]);
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -91,7 +75,7 @@ describe('Settings', () => {
   });
 
   it('loads the report from a custom path', async () => {
-    const file = getFileXml('from-custom-report.js', defautMetrics, [defaultLine]);
+    const file = getFileXml('from-custom-report.js', DEFAULT_METRICS, [DEFAULT_LINE]);
     const xmlReport = wrapXmlReport(file);
 
     const cloverReportPath = './custom/path/to/clover.xml';
@@ -116,11 +100,13 @@ describe('Settings', () => {
   });
 
   it('limits the number of rows', async () => {
-    const files = new Array(10).fill().map((_, i) => getFileXml(i, defautMetrics, [defaultLine]));
+    const files = new Array(10).fill().map((_, i) => (
+      getFileXml(i, DEFAULT_METRICS, [DEFAULT_LINE])
+    ));
     const xmlReport = wrapXmlReport(files.join('\n'));
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -140,11 +126,11 @@ describe('Settings', () => {
   });
 
   it('shows all files', async () => {
-    const file = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+    const file = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -186,7 +172,7 @@ describe('Settings', () => {
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {

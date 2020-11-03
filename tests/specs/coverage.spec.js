@@ -2,6 +2,7 @@ import path from 'path';
 import mockFs from 'mock-fs';
 
 import coverage from '../../src';
+import { CLOVER_PATH, DEFAULT_METRICS, DEFAULT_LINE } from '../constants';
 import {
   getFileXml,
   getMarkdownReport,
@@ -9,23 +10,6 @@ import {
   translateMetric,
   wrapXmlReport,
 } from '../utils';
-
-const cloverPath = path.join(process.cwd(), 'coverage', 'clover.xml');
-
-const defautMetrics = {
-  statements: 10,
-  coveredstatements: 10,
-  conditionals: 10,
-  coveredconditionals: 10,
-  methods: 10,
-  coveredmethods: 10,
-};
-
-const defaultLine = {
-  num: 1,
-  count: 1,
-  type: 'stmt',
-};
 
 const successMessage = '> :+1: Test coverage is looking good.';
 
@@ -40,11 +24,11 @@ describe('Coverage', () => {
   });
 
   it('reports row as passing when all metrics meet the threshold', async () => {
-    const file = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+    const file = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -70,10 +54,10 @@ describe('Coverage', () => {
     'methods',
   ])('reports row as failing when %s does not meet the threshold', async (metric) => {
     const file = getFileXml('src/one.js', {
-      ...defautMetrics,
+      ...DEFAULT_METRICS,
       [metric]: 10,
       [`covered${metric}`]: 0,
-    }, [defaultLine]);
+    }, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport(file);
     const row = [
@@ -88,7 +72,7 @@ describe('Coverage', () => {
     ].join('|');
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -110,7 +94,7 @@ describe('Coverage', () => {
   });
 
   it('reports row as failing when lines does not meet the threshold', async () => {
-    const file = getFileXml('src/one.js', defautMetrics, [
+    const file = getFileXml('src/one.js', DEFAULT_METRICS, [
       {
         num: 1,
         count: 0,
@@ -120,7 +104,7 @@ describe('Coverage', () => {
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -142,9 +126,9 @@ describe('Coverage', () => {
   });
 
   it.each(['project', 'package'])('handles multiple %ss', async (parentElement) => {
-    const fileOne = getFileXml('src/one.js', defautMetrics, [defaultLine]);
-    const fileTwo = getFileXml('src/two.js', defautMetrics, [defaultLine]);
-    const fileThree = getFileXml('src/three.js', defautMetrics, [defaultLine]);
+    const fileOne = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
+    const fileTwo = getFileXml('src/two.js', DEFAULT_METRICS, [DEFAULT_LINE]);
+    const fileThree = getFileXml('src/three.js', DEFAULT_METRICS, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport(`
       <${parentElement}>
@@ -159,7 +143,7 @@ describe('Coverage', () => {
     `);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -186,9 +170,9 @@ describe('Coverage', () => {
   });
 
   it('only includes rows that have been created or modified', async () => {
-    const fileOne = getFileXml('src/one.js', defautMetrics, [defaultLine]);
-    const fileTwo = getFileXml('src/two.js', defautMetrics, [defaultLine]);
-    const fileThree = getFileXml('src/three.js', defautMetrics, [defaultLine]);
+    const fileOne = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
+    const fileTwo = getFileXml('src/two.js', DEFAULT_METRICS, [DEFAULT_LINE]);
+    const fileThree = getFileXml('src/three.js', DEFAULT_METRICS, [DEFAULT_LINE]);
     const xmlReport = wrapXmlReport([
       fileOne,
       fileTwo,
@@ -196,7 +180,7 @@ describe('Coverage', () => {
     ].join('\n'));
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -217,11 +201,13 @@ describe('Coverage', () => {
   });
 
   it('adds any extra rows to a details block', async () => {
-    const files = new Array(10).fill().map((_, i) => getFileXml(i, defautMetrics, [defaultLine]));
+    const files = new Array(10).fill().map((_, i) => (
+      getFileXml(i, DEFAULT_METRICS, [DEFAULT_LINE])
+    ));
     const xmlReport = wrapXmlReport(files.join('\n'));
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -249,12 +235,12 @@ describe('Coverage', () => {
       coveredconditionals: 0,
       methods: 0,
       coveredmethods: 0,
-    }, [defaultLine]);
+    }, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -287,7 +273,7 @@ describe('Coverage', () => {
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -310,12 +296,12 @@ describe('Coverage', () => {
   it('shortens long paths', async () => {
     const seg = 'xxxxxxxxxx';
     const longPath = new Array(10).fill(seg).join('/');
-    const file = getFileXml(longPath, defautMetrics, [defaultLine]);
+    const file = getFileXml(longPath, DEFAULT_METRICS, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -345,12 +331,12 @@ describe('Coverage', () => {
       coveredconditionals: 3,
       methods: 3,
       coveredmethods: 2,
-    }, [defaultLine]);
+    }, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport(file);
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -373,8 +359,8 @@ describe('Coverage', () => {
   });
 
   it('includes a link to the committed file', async () => {
-    const fileOne = getFileXml('src/one.js', defautMetrics, [defaultLine]);
-    const fileTwo = getFileXml('src/two.js', defautMetrics, [defaultLine]);
+    const fileOne = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
+    const fileTwo = getFileXml('src/two.js', DEFAULT_METRICS, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport([
       fileOne,
@@ -382,7 +368,7 @@ describe('Coverage', () => {
     ].join('\n'));
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -412,12 +398,12 @@ describe('Coverage', () => {
   });
 
   it('does not report anything if no coverage reported for the files changed', async () => {
-    const fileOne = getFileXml('src/one.js', defautMetrics, [defaultLine]);
+    const fileOne = getFileXml('src/one.js', DEFAULT_METRICS, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport([fileOne].join('\n'));
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
@@ -434,12 +420,12 @@ describe('Coverage', () => {
   });
 
   it('handles relative paths correctly', async () => {
-    const fileOne = getFileXml(path.join(process.cwd(), '/src/index.js'), defautMetrics, [defaultLine]);
+    const fileOne = getFileXml(path.join(process.cwd(), '/src/index.js'), DEFAULT_METRICS, [DEFAULT_LINE]);
 
     const xmlReport = wrapXmlReport([fileOne].join('\n'));
 
     mockFs({
-      [cloverPath]: xmlReport,
+      [CLOVER_PATH]: xmlReport,
     });
 
     Object.assign(danger, {
