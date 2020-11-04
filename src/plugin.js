@@ -179,7 +179,7 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
     '% Branch',
     '% Funcs',
     '% Lines',
-    'Uncovered',
+    'Uncovered Lines',
     '',
   ];
 

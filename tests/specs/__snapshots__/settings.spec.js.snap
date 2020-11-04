@@ -5,7 +5,7 @@ exports[`Settings limits the number of rows 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |0|100|100|100|100||:white_check_mark:|
 |1|100|100|100|100||:white_check_mark:|
@@ -15,7 +15,7 @@ exports[`Settings limits the number of rows 1`] = `
 and 8 more...
 </summary>
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |2|100|100|100|100||:white_check_mark:|
 |3|100|100|100|100||:white_check_mark:|

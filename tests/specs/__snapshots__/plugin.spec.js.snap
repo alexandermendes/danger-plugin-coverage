@@ -5,7 +5,7 @@ exports[`Coverage Plugin adds any extra rows to a details block 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |0|100|100|100|100||:white_check_mark:|
 |1|100|100|100|100||:white_check_mark:|
@@ -18,7 +18,7 @@ exports[`Coverage Plugin adds any extra rows to a details block 1`] = `
 and 5 more...
 </summary>
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |5|100|100|100|100||:white_check_mark:|
 |6|100|100|100|100||:white_check_mark:|
@@ -33,7 +33,7 @@ exports[`Coverage Plugin handles multiple packages 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|100||:white_check_mark:|
 |src/two.js|100|100|100|100||:white_check_mark:|
@@ -45,7 +45,7 @@ exports[`Coverage Plugin handles multiple projects 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|100||:white_check_mark:|
 |src/two.js|100|100|100|100||:white_check_mark:|
@@ -57,7 +57,7 @@ exports[`Coverage Plugin handles relative paths correctly 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/index.js|100|100|100|100||:white_check_mark:|"
 `;
@@ -67,7 +67,7 @@ exports[`Coverage Plugin ignores the row if no lines 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|-|-|-|-||-|"
 `;
@@ -77,7 +77,7 @@ exports[`Coverage Plugin includes a link to the committed file 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |[src/one.js](../blob/abc123/src/one.js)|100|100|100|100||:white_check_mark:|
 |[src/two.js](../blob/abc123/src/two.js)|100|100|100|100||:white_check_mark:|"
@@ -93,7 +93,7 @@ Coverage threshold for branches (80%) not met: 33.33%
 Coverage threshold for functions (80%) not met: 66.67%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|95.24|33.33|66.67|100||:x:|"
 `;
@@ -103,7 +103,7 @@ exports[`Coverage Plugin only includes rows that have been created or modified 1
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|100||:white_check_mark:|
 |src/two.js|100|100|100|100||:white_check_mark:|"
@@ -114,7 +114,7 @@ exports[`Coverage Plugin passes if no total for each metric 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|100||:white_check_mark:|"
 `;
@@ -128,7 +128,7 @@ exports[`Coverage Plugin reports row as failing when conditionals does not meet 
 Coverage threshold for branches (80%) not met: 0%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|0|100|100||:x:|"
 `;
@@ -142,7 +142,7 @@ exports[`Coverage Plugin reports row as failing when lines does not meet the thr
 Coverage threshold for lines (80%) not met: 0%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|0|1|:x:|"
 `;
@@ -156,7 +156,7 @@ exports[`Coverage Plugin reports row as failing when methods does not meet the t
 Coverage threshold for functions (80%) not met: 0%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|0|100||:x:|"
 `;
@@ -170,7 +170,7 @@ exports[`Coverage Plugin reports row as failing when statements does not meet th
 Coverage threshold for statements (80%) not met: 0%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|0|100|100|100||:x:|"
 `;
@@ -180,7 +180,7 @@ exports[`Coverage Plugin reports row as passing when all metrics meet the thresh
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|100||:white_check_mark:|"
 `;
@@ -194,7 +194,7 @@ exports[`Coverage Plugin reports uncovered lines 1`] = `
 Coverage threshold for lines (80%) not met: 0%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |src/one.js|100|100|100|0|1,2,3...|:x:|
 |src/two.js|100|100|100|0|1|:x:|"
@@ -209,7 +209,7 @@ exports[`Coverage Plugin reports uncovered lines with link if sha available 1`] 
 Coverage threshold for lines (80%) not met: 0%
 \`\`\`
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |[src/one.js](../blob/abc123/src/one.js)|100|100|100|0|[1](../blob/abc123/src/one.js#L1)|:x:|"
 `;
@@ -219,7 +219,7 @@ exports[`Coverage Plugin shortens long paths 1`] = `
 
 > :+1: Test coverage is looking good.
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
 |../xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx|100|100|100|100||:white_check_mark:|"
 `;

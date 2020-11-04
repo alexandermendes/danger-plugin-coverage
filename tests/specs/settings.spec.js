@@ -145,7 +145,7 @@ describe('Settings', () => {
     const report = getMarkdownReport();
     const lines = report.split('\n');
 
-    expect(lines).toContain('|Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||');
+    expect(lines).toContain('|Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||');
     expect(lines).toContain('|src/one.js|100|100|100|100||:white_check_mark:|');
   });
 
