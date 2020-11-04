@@ -86,17 +86,19 @@ The function accepts a settings object with the following properties:
 | `threshold`          | The thresholds at which to show the failure messaging.                                       |
 | `warnOnNoReport`     | Show a warning if no coverage report was detected.                                           |
 
-**Example:**
+**Example (defaults shown):**
 
 ```js
 import coverage from 'danger-plugin-coverage';
 
 schedule(coverage({
   successMessage: ':+1: Test coverage is looking good.',
-  failureMessage: ':-1: Test coverage is not looking so good.',
-  warnOnNoReport: true,
+  failureMessage: 'Test coverage is looking a little low for the files created '
+    + 'or modified in this PR, perhaps we need to improve this.',
   cloverReportPath: './coverage/clover.xml',
   maxRows: 5,
+  warnOnNoReport: true,
+  showAllFiles: false,
   threshold: {
     statements: 80,
     branches: 80,
