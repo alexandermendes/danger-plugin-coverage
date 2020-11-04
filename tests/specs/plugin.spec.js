@@ -225,7 +225,7 @@ describe('Coverage Plugin', () => {
 
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
-    expect(lines).toContain('and 5 more...');
+    expect(lines).toContain('and 7 more...');
   });
 
   it('passes if no total for each metric', async () => {

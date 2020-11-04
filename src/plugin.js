@@ -305,7 +305,7 @@ export const coverage = async ({
   failureMessage = 'Test coverage is looking a little low for the files created '
     + 'or modified in this PR, perhaps we need to improve this.',
   cloverReportPath,
-  maxRows = 5,
+  maxRows = 3,
   maxChars = 100,
   showAllFiles = false,
   warnOnNoReport = true,
