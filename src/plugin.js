@@ -66,6 +66,7 @@ const getFileMetrics = (file) => {
     ...fileMetrics,
     lines: lines.length,
     coveredlines: lines.length - uncoveredLines.length,
+    uncoveredLines,
   };
 };
 
@@ -134,6 +135,22 @@ const buildRow = (file, threshold) => {
     emoji = '-';
   }
 
+  const maxUncovered = 3;
+  let uncoveredCell = fileMetrics
+    .uncoveredLines
+    .slice(0, maxUncovered)
+    .map((line) => {
+      const lineNumber = line.$.num;
+      const anchor = `#L${lineNumber}`;
+
+      return sha ? `[${lineNumber}](${fileLink + anchor})` : lineNumber;
+    })
+    .join();
+
+  if (fileMetrics.uncoveredLines.length > maxUncovered) {
+    uncoveredCell += '...';
+  }
+
   return [
     '',
     fileCell,
@@ -141,6 +158,7 @@ const buildRow = (file, threshold) => {
     noLines ? '-' : percentages.branches,
     noLines ? '-' : percentages.functions,
     noLines ? '-' : percentages.lines,
+    uncoveredCell,
     emoji,
     '',
   ].join('|');
@@ -161,6 +179,7 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
     '% Branch',
     '% Funcs',
     '% Lines',
+    'Uncovered',
     '',
   ];
 
