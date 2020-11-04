@@ -174,7 +174,12 @@ const joinRow = (items) => `|${items.map((item) => item).join('|')}|`;
 /**
  * Build the coverage table.
  */
-const buildTable = (files, maxRows, maxChars, threshold, showAllFiles) => {
+const buildTable = (files, {
+  maxRows,
+  maxChars,
+  threshold,
+  showAllFiles,
+}) => {
   const headings = [
     `${showAllFiles ? '' : 'Impacted '}Files`,
     '% Stmts',
@@ -237,7 +242,7 @@ const getThresholdSummaryLine = (percentages, key, threshold) => {
 /**
  * Build the test summary.
  */
-const buildSummary = (metrics, successMessage, failureMessage, threshold) => {
+const buildSummary = (metrics, { successMessage, failureMessage, threshold }) => {
   const percentages = getMetricPercentages(metrics);
   const passed = hasPassed(threshold, percentages);
 
@@ -279,7 +284,7 @@ const getCombinedMetrics = (files) => files.reduce((acc, file) => {
 /**
  * Get the relevant files.
  */
-const getRelevantFiles = (coverageXml, showAllFiles) => {
+const getRelevantFiles = (coverageXml, { showAllFiles }) => {
   const files = getFlatFiles(coverageXml);
   const allFiles = [
     ...(danger.git?.created_files || []),
@@ -300,41 +305,44 @@ const getRelevantFiles = (coverageXml, showAllFiles) => {
 /**
  * Report coverage.
  */
-export const coverage = async ({
-  successMessage = ':+1: Test coverage is looking good.',
-  failureMessage = 'Test coverage is looking a little low for the files created '
-    + 'or modified in this PR, perhaps we need to improve this.',
-  cloverReportPath,
-  maxRows = 3,
-  maxChars = 100,
-  showAllFiles = false,
-  warnOnNoReport = true,
-  threshold = {
-    statements: 80,
-    branches: 80,
-    functions: 80,
-    lines: 80,
-  },
-} = {}) => {
-  const coverageXml = await getCoverageReport(cloverReportPath);
+export const coverage = async (initialOpts = {}) => {
+  const opts = {
+    successMessage: ':+1: Test coverage is looking good.',
+    failureMessage: 'Test coverage is looking a little low for the files created '
+      + 'or modified in this PR, perhaps we need to improve this.',
+    cloverReportPath: null,
+    maxRows: 3,
+    maxChars: 100,
+    showAllFiles: false,
+    warnOnNoReport: true,
+    threshold: {
+      statements: 80,
+      branches: 80,
+      functions: 80,
+      lines: 80,
+    },
+    ...initialOpts,
+  };
+
+  const coverageXml = await getCoverageReport(opts.cloverReportPath);
 
   if (!coverageXml) {
-    if (warnOnNoReport) {
+    if (opts.warnOnNoReport) {
       warn('No coverage report was detected. '
         + 'Please output a report in the `clover.xml` format before running danger');
     }
     return;
   }
 
-  const relevantFiles = getRelevantFiles(coverageXml, showAllFiles);
+  const relevantFiles = getRelevantFiles(coverageXml, opts);
 
   if (!relevantFiles.length) {
     return;
   }
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
-  const table = buildTable(relevantFiles, maxRows, maxChars, threshold, showAllFiles);
-  const summary = buildSummary(combinedMetrics, successMessage, failureMessage, threshold);
+  const table = buildTable(relevantFiles, opts);
+  const summary = buildSummary(combinedMetrics, opts);
   const report = [
     '## Coverage Report',
     summary,
