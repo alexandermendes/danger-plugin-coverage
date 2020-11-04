@@ -320,7 +320,7 @@ describe('Coverage Plugin', () => {
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
     expect(lines).toContain(
-      `|../${seg}/${seg}/${seg}/${seg}/${seg}|100|100|100|100||:white_check_mark:|`,
+      `|../${seg}/${seg}/${seg}/${seg}|100|100|100|100||:white_check_mark:|`,
     );
   });
 

@@ -96,7 +96,7 @@ describe('Settings', () => {
     const report = getMarkdownReport();
     const lines = report.split('\n');
 
-    expect(lines).toContain('|from-custom-report.js|100|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|from-custom-report.js|100|100|100|100||:white_check_mark:|');
   });
 
   it('limits the number of rows', async () => {
@@ -145,8 +145,8 @@ describe('Settings', () => {
     const report = getMarkdownReport();
     const lines = report.split('\n');
 
-    expect(lines).toContain('|Files|% Stmts|% Branch|% Funcs|% Lines||');
-    expect(lines).toContain('|src/one.js|100|100|100|100|:white_check_mark:|');
+    expect(lines).toContain('|Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered||');
+    expect(lines).toContain('|src/one.js|100|100|100|100||:white_check_mark:|');
   });
 
   it('uses custom thresholds', async () => {
@@ -196,6 +196,6 @@ describe('Settings', () => {
     const lines = report.split('\n');
 
     expect(lines).toContain('> Not good');
-    expect(lines).toContain('|src/one.js|90|90|90|50|:x:|');
+    expect(lines).toContain('|src/one.js|90|90|90|50|1|:x:|');
   });
 });
