@@ -74,7 +74,7 @@ const getFileMetrics = (file) => {
  * Shorten a path so that it fits in a GitHub comment.
  */
 const getShortPath = (filePath) => {
-  const maxChars = 50;
+  const maxChars = 40;
   const parts = filePath.split('/').reverse().filter((x) => x);
 
   if (parts.length === 1) {
