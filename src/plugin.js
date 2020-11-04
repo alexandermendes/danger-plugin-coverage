@@ -73,7 +73,7 @@ const getFileMetrics = (file) => {
 /**
  * Shorten a path so that it fits in a GitHub comment.
  */
-const getShortPath = (filePath, maxChars) => {
+const getShortPath = (filePath, maxChars, wrapFilenames) => {
   const parts = filePath.split('/').reverse().filter((x) => x);
 
   if (parts.length === 1) {
@@ -102,6 +102,28 @@ const getShortPath = (filePath, maxChars) => {
 };
 
 /**
+ * Insert whitespace into a path so that it wraps within the Markdown table.
+ */
+const getWrappedPath = (filePath) => {
+  const parts = filePath.split('/');
+  const maxPerLine = 25;
+  let currentChars = 0;
+
+  return parts.map((pathPart, i) => {
+    const isLastPart = parts.length - 1 === i;
+    const newPart = isLastPart ? pathPart : `${pathPart}/`;
+    currentChars += pathPart.length;
+
+    if (currentChars + (parts[i + 1]?.length || 0) > maxPerLine) {
+      currentChars = 0;
+      return `${newPart}<br>`;
+    }
+
+    return newPart;
+  }).join('');
+};
+
+/**
  * Check if we have passed the thresholds for the given percentages.
  */
 const hasPassed = (threshold, {
@@ -119,14 +141,17 @@ const hasPassed = (threshold, {
 /**
  * Build a row for the coverage table.
  */
-const buildRow = (file, threshold, maxChars) => {
+const buildRow = (file, threshold, maxChars, wrapFilenames) => {
   const fileMetrics = getFileMetrics(file);
 
   const { sha } = danger.git?.commits?.[danger.git.commits.length - 1] || {};
-  const filePath = path.relative(process.cwd(), file.$.path);
-  const shortPath = getShortPath(filePath, maxChars);
-  const fileLink = `../blob/${sha}/${filePath}`;
-  const fileCell = sha ? `[${shortPath}](${fileLink})` : shortPath;
+
+  const longPath = path.relative(process.cwd(), file.$.path);
+  const shortPath = getShortPath(longPath, maxChars);
+  const readablePath = wrapFilenames ? getWrappedPath(shortPath) : shortPath;
+
+  const fileLink = `../blob/${sha}/${longPath}`;
+  const fileCell = sha ? `[${readablePath}](${fileLink})` : readablePath;
 
   const percentages = getMetricPercentages(fileMetrics);
 
@@ -179,6 +204,7 @@ const buildTable = (files, {
   maxChars,
   threshold,
   showAllFiles,
+  wrapFilenames,
 }) => {
   const headings = [
     `${showAllFiles ? '' : 'Impacted '}Files`,
@@ -198,7 +224,7 @@ const buildTable = (files, {
     ], []),
   );
 
-  const allFileRows = files.map((file) => buildRow(file, threshold, maxChars));
+  const allFileRows = files.map((file) => buildRow(file, threshold, maxChars, wrapFilenames));
   const mainFileRows = allFileRows.slice(0, maxRows);
   const extraFileRows = allFileRows.slice(maxRows);
 
@@ -313,6 +339,7 @@ export const coverage = async (initialOpts = {}) => {
     cloverReportPath: null,
     maxRows: 3,
     maxChars: 100,
+    wrapFilenames: true,
     showAllFiles: false,
     warnOnNoReport: true,
     threshold: {

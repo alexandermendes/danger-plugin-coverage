@@ -214,12 +214,12 @@ Coverage threshold for lines (80%) not met: 0%
 |[src/one.js](../blob/abc123/src/one.js)|100|100|100|0|[1](../blob/abc123/src/one.js#L1)|:x:|"
 `;
 
-exports[`Coverage Plugin shortens long paths 1`] = `
+exports[`Coverage Plugin shortens and wraps long paths 1`] = `
 "## Coverage Report
 
 > :+1: Test coverage is looking good.
 
 |Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
-|../xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx|100|100|100|100||:white_check_mark:|"
+|../xxxxxxxxxx/xxxxxxxxxx/<br>xxxxxxxxxx/xxxxxxxxxx/<br>xxxxxxxxxx/xxxxxxxxxx/<br>xxxxxxxxxx/xxxxxxxxxx|100|100|100|100||:white_check_mark:|"
 `;
