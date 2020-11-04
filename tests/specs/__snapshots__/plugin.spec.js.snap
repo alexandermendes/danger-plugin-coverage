@@ -196,7 +196,7 @@ Coverage threshold for lines (80%) not met: 0%
 
 |Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
-|src/one.js|100|100|100|0|1, 2, 3...|:x:|
+|src/one.js|100|100|100|0|1, 2, 3, 4, 5, 6, 7, 8, 9, 10...|:x:|
 |src/two.js|100|100|100|0|1|:x:|"
 `;
 

@@ -141,7 +141,12 @@ const hasPassed = (threshold, {
 /**
  * Build a row for the coverage table.
  */
-const buildRow = (file, threshold, maxChars, wrapFilenames) => {
+const buildRow = (file, {
+  threshold,
+  maxChars,
+  maxUncovered,
+  wrapFilenames,
+}) => {
   const fileMetrics = getFileMetrics(file);
 
   const { sha } = danger.git?.commits?.[danger.git.commits.length - 1] || {};
@@ -162,7 +167,6 @@ const buildRow = (file, threshold, maxChars, wrapFilenames) => {
     emoji = '-';
   }
 
-  const maxUncovered = 3;
   let uncoveredCell = fileMetrics
     .uncoveredLines
     .slice(0, maxUncovered)
@@ -199,13 +203,12 @@ const joinRow = (items) => `|${items.map((item) => item).join('|')}|`;
 /**
  * Build the coverage table.
  */
-const buildTable = (files, {
-  maxRows,
-  maxChars,
-  threshold,
-  showAllFiles,
-  wrapFilenames,
-}) => {
+const buildTable = (files, opts) => {
+  const {
+    maxRows,
+    showAllFiles,
+  } = opts;
+
   const headings = [
     `${showAllFiles ? '' : 'Impacted '}Files`,
     '% Stmts',
@@ -224,7 +227,7 @@ const buildTable = (files, {
     ], []),
   );
 
-  const allFileRows = files.map((file) => buildRow(file, threshold, maxChars, wrapFilenames));
+  const allFileRows = files.map((file) => buildRow(file, opts));
   const mainFileRows = allFileRows.slice(0, maxRows);
   const extraFileRows = allFileRows.slice(maxRows);
 
@@ -339,6 +342,7 @@ export const coverage = async (initialOpts = {}) => {
     cloverReportPath: null,
     maxRows: 3,
     maxChars: 100,
+    maxUncovered: 10,
     wrapFilenames: true,
     showAllFiles: false,
     warnOnNoReport: true,

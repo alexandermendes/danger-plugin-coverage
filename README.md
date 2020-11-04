@@ -84,6 +84,7 @@ The function accepts a settings object with the following properties:
 | `cloverReportPath`   | Override automatic coverage report detection to provide the relative path to a report.       |
 | `maxRows`            | The number of rows to show (additional rows will be collapsed within a `<details>` element). |
 | `maxChars`           | The maximum number of characters to allow in a file name cell.                               |
+| `maxUncovered`       | The maximum number of uncovered lines to show.                                               |
 | `wrapFilenames`      | Wrap long file names to help the table fit in a PR comment.                                  |
 | `threshold`          | The thresholds at which to show the failure messaging.                                       |
 | `warnOnNoReport`     | Show a warning if no coverage report was detected.                                           |
@@ -100,6 +101,7 @@ schedule(coverage({
   cloverReportPath: './coverage/clover.xml',
   maxRows: 3,
   maxChars: 100,
+  maxUncovered: 10,
   wrapFilenames: true,
   warnOnNoReport: true,
   showAllFiles: false,

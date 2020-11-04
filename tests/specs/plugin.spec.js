@@ -446,36 +446,17 @@ describe('Coverage Plugin', () => {
   });
 
   it('reports uncovered lines', async () => {
-    const fileOne = getFileXml(path.join(process.cwd(), '/src/one.js'), DEFAULT_METRICS, [
-      {
-        num: 1,
-        count: 0,
-        type: 'stmt',
-      },
-      {
-        num: 2,
-        count: 0,
-        type: 'stmt',
-      },
-      {
-        num: 3,
-        count: 0,
-        type: 'stmt',
-      },
-      {
-        num: 4,
-        count: 0,
-        type: 'stmt',
-      },
-    ]);
+    const getUncoveredLine = (num) => ({
+      num,
+      count: 0,
+      type: 'stmt',
+    });
 
-    const fileTwo = getFileXml(path.join(process.cwd(), '/src/two.js'), DEFAULT_METRICS, [
-      {
-        num: 1,
-        count: 0,
-        type: 'stmt',
-      },
-    ]);
+    const fileOneLines = new Array(11).fill().map((_, i) => getUncoveredLine(i + 1));
+    const fileOne = getFileXml(path.join(process.cwd(), '/src/one.js'), DEFAULT_METRICS, fileOneLines);
+
+    const fileTwoLines = [getUncoveredLine(1)];
+    const fileTwo = getFileXml(path.join(process.cwd(), '/src/two.js'), DEFAULT_METRICS, fileTwoLines);
 
     const xmlReport = wrapXmlReport([
       fileOne,
@@ -502,7 +483,7 @@ describe('Coverage Plugin', () => {
     const lines = report.split('\n');
 
     expect(report).toMatchSnapshot();
-    expect(lines).toContain('|src/one.js|100|100|100|0|1, 2, 3...|:x:|');
+    expect(lines).toContain('|src/one.js|100|100|100|0|1, 2, 3, 4, 5, 6, 7, 8, 9, 10...|:x:|');
     expect(lines).toContain('|src/two.js|100|100|100|0|1|:x:|');
   });
 
