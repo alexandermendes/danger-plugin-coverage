@@ -80,7 +80,7 @@ The function accepts a settings object with the following properties:
 | name                 | description                                                                                  |
 |----------------------|----------------------------------------------------------------------------------------------|
 | `successMessage`     | A custom message to show when coverage is above the threshold.                               |
-| `failureMessage`     | A custom message to show when coverage is bellow the threshold.                              |
+| `failureMessage`     | A custom message to show when coverage is below the threshold.                              |
 | `cloverReportPath`   | Override automatic coverage report detection to provide the relative path to a report.       |
 | `maxRows`            | The number of rows to show (additional rows will be collapsed within a `<details>` element). |
 | `threshold`          | The thresholds at which to show the failure messaging.                                       |
