@@ -145,7 +145,7 @@ const buildRow = (file, threshold) => {
 
       return sha ? `[${lineNumber}](${fileLink + anchor})` : lineNumber;
     })
-    .join();
+    .join(', ');
 
   if (fileMetrics.uncoveredLines.length > maxUncovered) {
     uncoveredCell += '...';

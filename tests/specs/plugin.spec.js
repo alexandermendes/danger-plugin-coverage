@@ -502,7 +502,7 @@ describe('Coverage Plugin', () => {
     const lines = report.split('\n');
 
     expect(report).toMatchSnapshot();
-    expect(lines).toContain('|src/one.js|100|100|100|0|1,2,3...|:x:|');
+    expect(lines).toContain('|src/one.js|100|100|100|0|1, 2, 3...|:x:|');
     expect(lines).toContain('|src/two.js|100|100|100|0|1|:x:|');
   });
 
