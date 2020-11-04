@@ -83,6 +83,7 @@ The function accepts a settings object with the following properties:
 | `failureMessage`     | A custom message to show when coverage is below the threshold.                               |
 | `cloverReportPath`   | Override automatic coverage report detection to provide the relative path to a report.       |
 | `maxRows`            | The number of rows to show (additional rows will be collapsed within a `<details>` element). |
+| `maxChars`           | The maximum number of characters to allow in a file name cell.                               |
 | `threshold`          | The thresholds at which to show the failure messaging.                                       |
 | `warnOnNoReport`     | Show a warning if no coverage report was detected.                                           |
 
@@ -97,6 +98,7 @@ schedule(coverage({
     + 'or modified in this PR, perhaps we need to improve this.',
   cloverReportPath: './coverage/clover.xml',
   maxRows: 5,
+  maxChars: 100,
   warnOnNoReport: true,
   showAllFiles: false,
   threshold: {

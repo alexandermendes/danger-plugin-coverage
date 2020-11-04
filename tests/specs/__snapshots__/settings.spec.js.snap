@@ -27,3 +27,13 @@ and 8 more...
 |9|100|100|100|100||:white_check_mark:|
 </details>"
 `;
+
+exports[`Settings makes paths even shorter 1`] = `
+"## Coverage Report
+
+> :+1: Test coverage is looking good.
+
+|Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+|../kl/mn|100|100|100|100||:white_check_mark:|"
+`;

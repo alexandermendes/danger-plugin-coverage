@@ -221,5 +221,5 @@ exports[`Coverage Plugin shortens long paths 1`] = `
 
 |Impacted Files|% Stmts|% Branch|% Funcs|% Lines|Uncovered Lines||
 |---|:-:|:-:|:-:|:-:|:-:|:-:|
-|../xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx|100|100|100|100||:white_check_mark:|"
+|../xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxx|100|100|100|100||:white_check_mark:|"
 `;

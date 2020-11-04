@@ -295,7 +295,7 @@ describe('Coverage Plugin', () => {
   });
 
   it('shortens long paths', async () => {
-    const seg = 'xxxxxxxxxx';
+    const seg = new Array(10).fill('x').join('');
     const longPath = new Array(10).fill(seg).join('/');
     const file = getFileXml(longPath, DEFAULT_METRICS, [DEFAULT_LINE]);
 
@@ -320,7 +320,7 @@ describe('Coverage Plugin', () => {
     expect(report).toMatchSnapshot();
     expect(lines).toContain(successMessage);
     expect(lines).toContain(
-      `|../${seg}/${seg}/${seg}/${seg}|100|100|100|100||:white_check_mark:|`,
+      `|../${new Array(8).fill(seg).join('/')}|100|100|100|100||:white_check_mark:|`,
     );
   });
 

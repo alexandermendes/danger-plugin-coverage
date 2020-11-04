@@ -73,8 +73,7 @@ const getFileMetrics = (file) => {
 /**
  * Shorten a path so that it fits in a GitHub comment.
  */
-const getShortPath = (filePath) => {
-  const maxChars = 40;
+const getShortPath = (filePath, maxChars) => {
   const parts = filePath.split('/').reverse().filter((x) => x);
 
   if (parts.length === 1) {
@@ -85,14 +84,17 @@ const getShortPath = (filePath) => {
 
   let currentChars = 0;
 
-  parts.forEach((part) => {
-    if (currentChars < maxChars) {
+  parts.forEach((part, index) => {
+    const isLastPart = parts.length - 1 === index;
+    currentChars += part.length + 1; // +1 for the path seperator
+    const prefixLength = (!isLastPart ? 3 : 0);
+
+    if (currentChars + prefixLength < maxChars) {
       shortParts.push(part);
-      currentChars += part.length + 1; // +1 for the path seperator
     }
   });
 
-  if (shortParts.length < parts.length - 1) {
+  if (shortParts.length < parts.length) {
     shortParts.push('..');
   }
 
@@ -117,12 +119,12 @@ const hasPassed = (threshold, {
 /**
  * Build a row for the coverage table.
  */
-const buildRow = (file, threshold) => {
+const buildRow = (file, threshold, maxChars) => {
   const fileMetrics = getFileMetrics(file);
 
   const { sha } = danger.git?.commits?.[danger.git.commits.length - 1] || {};
   const filePath = path.relative(process.cwd(), file.$.path);
-  const shortPath = getShortPath(filePath);
+  const shortPath = getShortPath(filePath, maxChars);
   const fileLink = `../blob/${sha}/${filePath}`;
   const fileCell = sha ? `[${shortPath}](${fileLink})` : shortPath;
 
@@ -172,7 +174,7 @@ const joinRow = (items) => `|${items.map((item) => item).join('|')}|`;
 /**
  * Build the coverage table.
  */
-const buildTable = (files, maxRows, threshold, showAllFiles) => {
+const buildTable = (files, maxRows, maxChars, threshold, showAllFiles) => {
   const headings = [
     `${showAllFiles ? '' : 'Impacted '}Files`,
     '% Stmts',
@@ -191,7 +193,7 @@ const buildTable = (files, maxRows, threshold, showAllFiles) => {
     ], []),
   );
 
-  const allFileRows = files.map((file) => buildRow(file, threshold));
+  const allFileRows = files.map((file) => buildRow(file, threshold, maxChars));
   const mainFileRows = allFileRows.slice(0, maxRows);
   const extraFileRows = allFileRows.slice(maxRows);
 
@@ -304,6 +306,7 @@ export const coverage = async ({
     + 'or modified in this PR, perhaps we need to improve this.',
   cloverReportPath,
   maxRows = 5,
+  maxChars = 100,
   showAllFiles = false,
   warnOnNoReport = true,
   threshold = {
@@ -330,7 +333,7 @@ export const coverage = async ({
   }
 
   const combinedMetrics = getCombinedMetrics(relevantFiles);
-  const table = buildTable(relevantFiles, maxRows, threshold, showAllFiles);
+  const table = buildTable(relevantFiles, maxRows, maxChars, threshold, showAllFiles);
   const summary = buildSummary(combinedMetrics, successMessage, failureMessage, threshold);
   const report = [
     '## Coverage Report',

@@ -198,4 +198,30 @@ describe('Settings', () => {
     expect(lines).toContain('> Not good');
     expect(lines).toContain('|src/one.js|90|90|90|50|1|:x:|');
   });
+
+  it('makes paths even shorter', async () => {
+    const longPath = 'ab/cd/ef/gh/ij/kl/mn'; // 20 chars
+    const file = getFileXml(longPath, DEFAULT_METRICS, [DEFAULT_LINE]);
+
+    const xmlReport = wrapXmlReport(file);
+
+    mockFs({
+      [CLOVER_PATH]: xmlReport,
+    });
+
+    Object.assign(danger, {
+      git: {
+        created_files: [longPath],
+        modified_files: [],
+      },
+    });
+
+    await coverage({ maxChars: 10 });
+
+    const report = getMarkdownReport();
+    const lines = report.split('\n');
+
+    expect(report).toMatchSnapshot();
+    expect(lines).toContain('|../kl/mn|100|100|100|100||:white_check_mark:|');
+  });
 });
