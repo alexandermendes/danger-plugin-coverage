@@ -31,8 +31,8 @@ Coverage threshold for branches (80%) not met: 49.08%
 Coverage threshold for functions (80%) not met: 74.46%
 ```
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Line|Uncovered Lines|
-|---|:-:|:-:|:-:|:-:|:-:|
+|Impacted Files|% Stmts|% Branch|% Funcs|% Line|Uncovered Lines||
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
 |[src/module-one.js]()|100|100|100|100||:white_check_mark:|
 |[src/module-two.js]()|95.24|33.33|66.67|80|[1](), [42](), [1337]()...|:x:|
 |[src/module-three.js]()|82.33|10.25|44.55|45.55|[12](), [15](), [32]()...|:x:|
@@ -44,8 +44,8 @@ Coverage threshold for functions (80%) not met: 74.46%
 and 2 more...
 </summary>
 
-|Impacted Files|% Stmts|% Branch|% Funcs|% Lines||
-|---|:-:|:-:|:-:|:-:|:-:|
+|Impacted Files|% Stmts|% Branch|% Funcs|% Line|Uncovered Lines||
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
 |[src/module-six.js]()|100|100|100|100||:white_check_mark:|
 |[src/module-seven.js]()|100|100|100|100||:white_check_mark:|
 </details>
